@@ -77,6 +77,12 @@ describe(`simple test NamedDepCounter`,
         expect(namedDepCounter.currentCount()).to.equal(2);
         expect(namedDepCounter.remainingCount()).to.equal(3);
         expect(namedDepCounter.remaining().length).to.equal(3);
+        expect(namedDepCounter.remaining()).to.deep.equal(
+          ["Sally", "Chuck", "Five"]
+        );
+        expect(namedDepCounter.current()).to.deep.equal(
+          ["Lucy", "Linus"]
+        );
       }
     );
 
@@ -88,8 +94,70 @@ describe(`simple test NamedDepCounter`,
         expect(namedDepCounter.currentCount()).to.equal(2);
         expect(namedDepCounter.remainingCount()).to.equal(3);
         expect(namedDepCounter.remaining().length).to.equal(3); 
+        expect(namedDepCounter.remaining()).to.deep.equal(
+          ["Sally", "Chuck", "Five"]
+        );
+        expect(namedDepCounter.current()).to.deep.equal(
+          ["Lucy", "Linus"]
+        );
       }
     );
+
+    it(`should be able to complete the rest of the dependencies`,
+      ()=>{ 
+        namedDepCounter.mark("Chuck");
+        namedDepCounter.mark("Five");
+        namedDepCounter.mark("Sally");
+        expect(namedDepCounter.current().length).to.equal(5);
+        expect(namedDepCounter.currentCount()).to.equal(5);
+        expect(namedDepCounter.remainingCount()).to.equal(0);
+        expect(namedDepCounter.remaining().length).to.equal(0); 
+        expect(completed).to.equal(true);
+        expect(namedDepCounter.remaining()).to.deep.equal([]);
+        expect(namedDepCounter.current()).to.deep.equal( 
+          ["Lucy", "Linus", "Chuck", "Five", "Sally"]
+        );
+      }
+    );
+
+    it(`should be able to reset `,
+      ()=>{ 
+        namedDepCounter.reset();
+        expect(namedDepCounter.dependencies()).to.deep.equal(depsToMark);
+        expect(namedDepCounter.count()).to.equal(5);
+        expect(namedDepCounter.remainingCount()).to.equal(5);
+        expect(namedDepCounter.remaining()).to.deep.equal(depsToMark);
+      }
+    );
+
+    it(`Should be able to add an onMark callback`,
+      ()=> { 
+        namedDepCounter.onMark(
+          (namedDepCounter)=>{ 
+            marked = namedDepCounter.current()
+          }
+        );
+      }
+    );
+
+    it(`Should be able to mark the dependency "Chuck"`,
+      ()=>{ 
+        namedDepCounter.mark("Chuck");
+        expect(marked).to.deep.equal(["Chuck"]);
+        expect(namedDepCounter.current()).to.deep.equal(["Chuck"]);
+      }
+    );
+
+    it(`Should be able to mark the dependency "Chuck" and ignore 
+        it since it has already been marked.`,
+      ()=>{ 
+        marked = false;
+        namedDepCounter.mark("Chuck");
+        expect(marked).to.deep.equal(false);
+        expect(namedDepCounter.current()).to.deep.equal(["Chuck"]);
+      }
+    );
+
   }
 );
 

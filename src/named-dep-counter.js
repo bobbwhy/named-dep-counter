@@ -85,14 +85,15 @@ class NamedDepCounter {
         `NamedDepCounter ${this._key} Warning: 
          tried to mark a non-existent dependency ${key} as complete`
       );
-      return;
+      return false;
     }
-    if (key in this._depsFulfilledIndex === true) return;
+    if (key in this._depsFulfilledIndex === true) return false;
 
     this._depsFulfilled.push(this._deps[this._depsIndex[key]]);
     this._depsFulfilledIndex[key] = true;
     this._remainingCount--;
     if (this._remainingCount === 0) return this._complete();
+    return true;
   }
 
   name(name=null) { 
@@ -118,6 +119,7 @@ class NamedDepCounter {
   reset() { 
     this._remainingCount = this._deps.length;
     this._depsFulfilled = [];
+    this._depsFulfilledIndex = {};
   }
 
   onComplete(callback) { 
@@ -126,8 +128,9 @@ class NamedDepCounter {
 
   onMark(callback) { 
     const mark = this.mark;
-    this.mark = function() { 
-      mark.call(this);
+    this.mark = function(key) { 
+      if (mark.call(this, key) === false) return;
+
       callback(this);
     }
   }
