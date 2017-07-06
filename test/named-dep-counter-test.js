@@ -13,6 +13,7 @@ describe(`simple test NamedDepCounter`,
     let namedDepCounter;
     let count; 
     let marked = false;
+    let lastMarked = false;
     let completed = false;
 
     const depsToMark = [ 
@@ -133,8 +134,9 @@ describe(`simple test NamedDepCounter`,
     it(`Should be able to add an onMark callback`,
       ()=> { 
         namedDepCounter.onMark(
-          (namedDepCounter)=>{ 
+          (namedDepCounter, key)=>{ 
             marked = namedDepCounter.current()
+            lastMarked = key;
           }
         );
       }
@@ -144,6 +146,7 @@ describe(`simple test NamedDepCounter`,
       ()=>{ 
         namedDepCounter.mark("Chuck");
         expect(marked).to.deep.equal(["Chuck"]);
+        expect(lastMarked).to.equal("Chuck");
         expect(namedDepCounter.current()).to.deep.equal(["Chuck"]);
       }
     );
