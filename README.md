@@ -1,5 +1,5 @@
 # NamedDepCounter (named-dep-counter)
-#### Version 0.5.1 BETA
+#### Version 0.5.2 BETA
 
 NamedDepCounter is a tool to keep track of a series of dependencies to be completed.  It can be used to track a series of tasks that need to be completed.
 
