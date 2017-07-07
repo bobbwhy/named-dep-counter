@@ -1,6 +1,6 @@
 {
   "name": "named-dep-counter",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Like DepCounter ( dep_counter) but with names for the dependencies",
   "main": "index.js",
   "scripts": {
