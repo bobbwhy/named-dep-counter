@@ -161,6 +161,32 @@ describe(`simple test NamedDepCounter`,
       }
     );
 
+    it(`should be able to specify a 'self' object to pass to 
+        onMark and onComplete callbacks`,
+      ()=>{ 
+        namedDepCounter = new NamedDepCounter('selfTest');
+        namedDepCounter.deps(['uno']);
+        namedDepCounter.self({TYPE: 'SELFY'});
+        namedDepCounter.onMark(
+          (self, key)=>{ 
+            marked = self.TYPE + key
+          }
+        );
+        namedDepCounter.onComplete( 
+          (self)=>{ 
+            completed = self.TYPE
+          }
+        );
+        namedDepCounter.mark('uno');
+
+        expect(namedDepCounter.ready()).to.equal(true);
+        expect(namedDepCounter.self().TYPE).to.equal('SELFY');
+        // expect(marked).to.equal('SELFYuno');
+        expect(completed).to.equal('SELFY');
+
+      }
+    );
+
   }
 );
 

@@ -1,5 +1,5 @@
 # NamedDepCounter (named-dep-counter)
-#### Version 0.5.3 BETA
+#### Version 0.6.0 BETA
 
 NamedDepCounter is a tool to keep track of a series of dependencies to be completed.  It can be used to track a series of tasks that need to be completed.
 
@@ -60,7 +60,7 @@ NamedDepCounter will ALSO track:
 #### Add some callbacks: 
 ```
     import NamedDepCounter from 'named-dep-counter';
-    const namedDepCounter = new DepCounter('namedDepCounterName');
+    const namedDepCounter = new NamedDepCounter('namedDepCounterName');
     namedDepCounter.onComplete((namedDepCounter)=>console.log('DONE', namedDepCounter.ready()));
     namedDepCounter.onMark((namedDepCounter, key)=>console.log(`Mark! ${key}))
 
@@ -68,5 +68,22 @@ NamedDepCounter will ALSO track:
     namedDepCounter.mark('one');  // NO EVENT
     namedDepCounter.mark('two');  // 'Mark! two'
     namedDepCounter.mark('three');  // 'Mark! three' & 'DONE true'
+
+```
+
+#### Alter the context for the callbacks with self command.
+The first argument for every callback is 'self'.  By default, 'self'
+is the instance of the NamedDepCounter itself.  You can override this if,
+for instance you are nesting the NamedDepCounter inside another class instance.
+
+```
+    const namedDepCounter = new NamedDepCounter('fricassee');
+    namedDepCounter.self({TYPE: 'SELFY'});
+    namedDepCounter.onComplete((self)=>console.log(self.TYPE + '_complete'));
+    namedDepCounter.deps(['a', 'b']);
+    namedDepCounter.onMark((self, key)=>console.log(self.TYPE + key))
+    namedDepCounter.mark('a'); // logs SELFY_a;
+    namedDepCounter.mark('b'); // logs SELFY_b AND logs SELFY_complete
+```
 
 ```
