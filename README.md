@@ -1,5 +1,5 @@
 # NamedDepCounter (named-dep-counter)
-#### Version 0.6.0 BETA
+#### Version 0.6.1 BETA
 
 NamedDepCounter is a tool to keep track of a series of dependencies to be completed.  It can be used to track a series of tasks that need to be completed.
 
@@ -9,7 +9,7 @@ NamedDepCounter will track:
 * The number of dependencies that have already been completed.
 * The number of dependencies that need to be completed.
 
-... **If that is all you need to do, look into (DepCounter)[https://npmjs.org/packages/dep_counter]**
+... **If that is all you need to do, look into [DepCounter](https://npmjs.org/packages/dep_counter)**
 
 NamedDepCounter will ALSO track: 
 
